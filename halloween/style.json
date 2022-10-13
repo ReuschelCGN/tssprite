@@ -23,23 +23,35 @@
   "bearing": 0,
   "pitch": 0,
   "sources": {
+    "open_zoomstack": {
+      "type": "vector",
+      "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/data/vector/open-zoomstack/config.json"
+    },
     "openmaptiles": {
       "type": "vector",
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key={key}"
+    },
+    "thunderforest_transport": {
+      "type": "vector",
+      "url": "https://tile.thunderforest.com/thunderforest.transport-v2.json?apikey={key}"
+    },
+    "thunderforest_outdoors": {
+      "type": "vector",
+      "url": "https://tile.thunderforest.com/thunderforest.outdoors-v2.json?apikey={key}"
     }
   },
-  "sprite": "https://raw.githubusercontent.com/nileplumb/sprite/main/sprite/halloween",
+  "sprite": "https://raw.githubusercontent.com/ReuschelCGN/tssprite/main/halloween/",
   "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key={key}",
   "layers": [
     {
       "id": "Ground",
       "type": "background",
-      "paint": {"background-color": "rgba(235,237,209,255)"}
+      "paint": {"background-color": "rgba(234,234,201,255)"}
     },
     {
       "id": "Ground-Texture",
       "type": "background",
-      "paint": {"background-pattern": "ground"}
+      "paint": {"background-pattern": "ground", "background-opacity": 0.75}
     },
     {
       "id": "grass",
@@ -58,7 +70,7 @@
       "filter": ["all", ["==", "class", "grass"], ["!=", "class", "retail"]],
       "layout": {"visibility": "visible"},
       "paint": {
-        "fill-opacity": 0.2,
+        "fill-opacity": 0.75,
         "fill-translate-anchor": "map",
         "fill-pattern": "grass"
       }
@@ -82,14 +94,14 @@
       "paint": {
         "fill-translate": [0, 2.5],
         "fill-pattern": "water",
-        "fill-opacity": 0.05
+        "fill-opacity": 0.75
       }
     },
     {
       "id": "road-outline",
       "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
+      "source": "thunderforest_transport",
+      "source-layer": "road",
       "filter": ["all", ["!=", "class", "rail"]],
       "layout": {
         "line-cap": "round",
@@ -97,23 +109,9 @@
         "line-miter-limit": 2
       },
       "paint": {
-        "line-color": "#FFAF67",
+        "line-color": "#fcfda1",
         "line-width": {
           "stops": [[6, 0.8], [11, 2.75], [14, 4.5], [16, 7.5], [20, 10]]
-        }
-      }
-    },
-    {
-      "id": "road",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
-      "filter": ["all", ["!=", "class", "rail"]],
-      "layout": {"line-cap": "round"},
-      "paint": {
-        "line-color": "#685b43",
-        "line-width": {
-          "stops": [[6, 0.5], [11, 2], [14, 3.5], [16, 6], [20, 8]]
         }
       }
     },
@@ -129,7 +127,21 @@
           "stops": [[6, 0.5], [11, 2], [14, 3.5], [16, 6], [20, 8]]
         },
         "line-pattern": "road",
-        "line-opacity": 0.3
+        "line-opacity": 0.5
+      }
+    },
+    {
+      "id": "road",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": ["all", ["!=", "class", "rail"]],
+      "layout": {"line-cap": "round"},
+      "paint": {
+        "line-color": "#6b5f46",
+        "line-width": {
+          "stops": [[6, 0.5], [11, 2], [14, 3.5], [16, 6], [20, 8]]
+        }
       }
     },
     {
@@ -147,7 +159,7 @@
         ["!=", "class", "commercial"]
       ],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "#9B9654", "fill-opacity": 0.5}
+      "paint": {"fill-color": "rgba(155, 150, 84, 1)", "fill-opacity": 0.5}
     },
     {
       "id": "place_label_city",
@@ -158,14 +170,14 @@
       "filter": ["all", ["==", "$type", "Point"], ["==", "class", "city"]],
       "layout": {
         "text-field": "{name:latin}\n{name:nonlatin}",
-        "text-font": ["LatoRegular"],
+        "text-font": ["Lato Bold"],
         "text-max-width": 10,
         "text-size": {"stops": [[3, 12], [8, 16]]}
       },
       "paint": {
-        "text-color": "hsl(0, 0%, 0%)",
+        "text-color": "rgba(255, 255, 255, 1)",
         "text-halo-blur": 0,
-        "text-halo-color": "rgba(201, 216, 168, 0.75)",
+        "text-halo-color": "rgba(54, 54, 9, 0.9)",
         "text-halo-width": 2
       }
     },
@@ -179,7 +191,7 @@
       "layout": {
         "symbol-placement": "line",
         "text-field": "{name:latin} {name:nonlatin}",
-        "text-font": ["LatoRegular"],
+        "text-font": ["Lato Bold"],
         "text-letter-spacing": 0.1,
         "text-rotation-alignment": "map",
         "text-size": {"base": 1.4, "stops": [[10, 8], [20, 14]]},
@@ -187,8 +199,8 @@
         "visibility": "visible"
       },
       "paint": {
-        "text-color": "#000",
-        "text-halo-color": "rgba(201, 216, 168, 0.75)",
+        "text-color": "rgba(255, 255, 255, 1)",
+        "text-halo-color": "rgba(54, 54, 9, 0.9)",
         "text-halo-width": 2,
         "text-halo-blur": 1
       }
@@ -207,15 +219,15 @@
       "layout": {
         "text-anchor": "center",
         "text-field": "{name:latin}\n{name:nonlatin}",
-        "text-font": ["LatoRegular"],
+        "text-font": ["Lato Bold"],
         "text-max-width": 6,
         "text-size": {"stops": [[6, 10], [12, 14]]},
         "visibility": "visible"
       },
       "paint": {
-        "text-color": "hsl(0, 0%, 25%)",
+        "text-color": "rgba(255, 255, 255, 1)",
         "text-halo-blur": 0,
-        "text-halo-color": "rgba(201, 216, 168, 0.75)",
+        "text-halo-color": "rgba(54, 54, 9, 0.9)",
         "text-halo-width": 2
       }
     }
